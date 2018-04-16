@@ -3,7 +3,6 @@ import lattice
 import inout
 import energy
 import pbc
-# import randomize
 import random
 import numpy as np
 import numba
@@ -55,13 +54,8 @@ class LatticeSystem:
         """Create distance matrix."""
         self.D = pbc.mdist_loop(self.P, self.box)
 
-    def dilute(self, s):
+    def dilute_bond(self, s):
         """Dilute network by removing links in matrix."""
-        # randomize.dilute(self.A, self.AA, self.II, self.JJ, s)
-        # self.B, self.AA, self.I, self.J, self.popped = randomize.dilute(
-        #                                                 self.A, self.AA,
-        #                                                 self.II, self.JJ, s)
-        # self.II, self.JJ = np.nonzero(self.AA)
         self.nonzero_list = [(i, j) for i, j in zip(self.II, self.JJ)]
         random.shuffle(self.nonzero_list)
         self.popped = []
@@ -93,9 +87,6 @@ class LatticeSystem:
             self.A = np.delete(self.A, site, 1)
             self.AA = np.delete(self.AA, site, 0)
             self.AA = np.delete(self.AA, site, 1)
-        # self.P = P
-        # self.A = A
-        # self.AA = AA
         self.I, self.J = np.nonzero(self.A)
         self.II, self.JJ = np.nonzero(self.AA)
 

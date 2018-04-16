@@ -65,20 +65,20 @@ for i in range(args.diluteno):
 
 # optimize positions for minimal total energy
 for j in range(args.diluteno):
-    r = Parallel(n_jobs=-1, verbose=args.verbosity)(delayed(opt.minimize)
-                                                    (energy.energy,
-                                                     systems[j][k].P.ravel(),
-                                                     args=(systems[j][k].box,
-                                                           systems[j][k].A,
-                                                           systems[j][k].ll),
-                                                     method='CG',
-                                                     jac=energy.gradient,
-                                                     options={'disp': True,
-                                                              'gtol': 1e-5})
-                                                    for k in range(
-                                                        args.iteration+1))
+    # minimize energy function
+    r = Parallel(n_jobs=-1, verbose=args.verbosity)(
+        delayed(opt.minimize)(energy.energy,
+                              systems[j][k].P.ravel(),
+                              args=(systems[j][k].box,
+                                    systems[j][k].A,
+                                    systems[j][k].ll),
+                              method='CG',
+                              jac=energy.gradient,
+                              options={'disp': True,
+                                       'gtol': 1e-5})
+        for k in range(args.iteration+1))
+    # feed optimized positions back to system objects
     for k in range(args.iteration+1):
-        # feed optimized positions back to system objects
         systems[j][k].P = r[k].x.reshape((-1, 2))
         systems[j][k].ener = r[k].fun
 
