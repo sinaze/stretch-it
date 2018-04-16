@@ -8,7 +8,8 @@ import scipy.optimize as opt
 from joblib import Parallel, delayed
 import argparse
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description="Calculates energy curve of a\
+                                 stretching process of a honeycomb lattice")
 parser.add_argument("nx", help="Number of lattice points to fill the box",
                     type=int)
 parser.add_argument("ny", help="Number of lattice points to fill the box",
