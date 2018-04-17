@@ -5,6 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
+!distance.cpython-35m-x86_64-linux-gnu.so
+!fenergy.cpython-35m-x86_64-linux-gnu.so
 
 # Distribution / packaging
 .Python
