@@ -3,6 +3,8 @@ import distance as dist
 import lattice
 import pbc
 import numpy as np
+import energy
+import fenergy
 
 dim = (20, 20)
 A, AA = lattice.links_matrix(dim)
@@ -12,6 +14,7 @@ P, box = lattice.fill_box(dim)
 ll = 1.0
 
 print(dist.__doc__)
+print(fenergy.__doc__)
 
 old = [[pbc.min_d(i, j, P, box) for j in range(200)] for i in range(200)]
 
@@ -27,3 +30,12 @@ dist.mindist_norm(2, 46, P, box)
 D = pbc.mdist_loop(P, box)
 DD = dist.dist_mat(P, box)
 np.nonzero(D - DD)
+
+energy.energy(P, box, A, ll)
+energy.gradient(P, box, A, ll)
+D = dist.dist_mat(P, box)
+np.fill_diagonal(D, 1)
+grad = np.zeros((200, 2))
+fenergy.gradient(A, D, P, box, ll, grad)
+
+P, box = lattice.stretch_it(P, box, 1.5)
