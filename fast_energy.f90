@@ -11,16 +11,16 @@ subroutine mindist(a, b, Pos, box, d, Dim, NAtom)
 
     d = Pos(a, :) - Pos(b, :)
     if (abs(d(0)) > 0.5_dp*box(0)) then
-        if (d(0) > 0) then
+        if (d(0) > 0.0_dp) then
             d(0) = Pos(a, 0) - (Pos(b, 0) + box(0))
-        else if (d(0) < 0) then
+        else if (d(0) < 0.0_dp) then
             d(0) = Pos(a, 0) - (Pos(b, 0) - box(0))
         end if
     end if
     if (abs(d(1)) > 0.5_dp*box(1)) then
-        if (d(1) > 0) then
+        if (d(1) > 0.0_dp) then
             d(1) = Pos(a, 1) - (Pos(b, 1) + box(1))
-        else if (d(1) < 0) then
+        else if (d(1) < 0.0_dp) then
             d(1) = Pos(a, 1) - (Pos(b, 1) - box(1))
         end if
     end if
@@ -76,7 +76,7 @@ subroutine gradient(AMat, DMat, Pos, box, l, grad, Dim, NAtom)
     real(dp), intent(in), dimension(0:Dim-1)                :: box
     real(dp), intent(in)                                    :: l
     real(dp), intent(inout), dimension(0:NAtom-1, 0:Dim-1)  :: grad
-    !f2py intent(in, out) :: grad
+!f2py intent(in, out) :: grad
 
     integer                      :: i, j
     real(dp), dimension(0:Dim-1) :: d, fac
