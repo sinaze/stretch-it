@@ -1,4 +1,6 @@
+"""Plot for testing."""
 import pickle
+# %matplotlib inline
 
 with open('test.pkl', 'rb') as input:
     test = pickle.load(input)
