@@ -2,10 +2,9 @@
 import lattice
 import inout
 import energy
-import pbc
+import distance as dist
 import random
 import numpy as np
-import numba
 
 
 class LatticeSystem:
@@ -19,40 +18,40 @@ class LatticeSystem:
         self.A, self.AA = np.copy(A), np.copy(AA)
         self.ll = 1.0
 
-    @numba.jit
+    # @numba.jit
     def show(self):
         """Plot system configuration."""
         self.create_mdist()
         inout.show_system(self.P, self.II, self.JJ, self.D, self.ll,
                           box=self.box)
 
-    @numba.jit
+    # @numba.jit
     def save(self, name):
         """Save system configuration."""
         self.create_mdist()
         inout.save_system(name, self.P, self.II, self.JJ, self.D, self.ll,
                           box=self.box)
 
-    @numba.jit
+    # @numba.jit
     def energy(self):
         """Compute energy of system."""
         self.ener = energy.energy(self.P, self.box, self.A, self.ll)
         return self.ener
 
-    @numba.jit
+    # @numba.jit
     def grad(self):
         """Compute Jacobi matrix."""
         return energy.gradient(self.P, self.box, self.A, self.ll)
 
-    @numba.jit
+    # @numba.jit
     def dist(self, a, b, euc=True):
         """Return distance."""
-        return pbc.min_d(a, b, self.P, self.box, norm=euc)
+        return dist.mindist(a, b, self.P, self.box, norm=euc)
 
-    @numba.jit
+    # @numba.jit
     def create_mdist(self):
         """Create distance matrix."""
-        self.D = pbc.mdist_loop(self.P, self.box)
+        self.D = dist.dist_mat(self.P, self.box)
 
     def dilute_bond(self, s):
         """Dilute network by removing links in matrix."""
