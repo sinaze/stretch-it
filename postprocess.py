@@ -19,6 +19,9 @@ phi = dil/tot
 
 mean_en = np.mean([[vars(obj[i, j])['ener'] for j in range(obj.shape[1])]
                    for i in range(obj.shape[0])], axis=0)
+std_en = np.std([[vars(obj[i, j])['ener'] for j in range(obj.shape[1])]
+                 for i in range(obj.shape[0])], axis=0)
+err_en = std_en/np.sqrt(obj.shape[0])
 mean_box = np.mean([[vars(obj[i, j])['box'] for j in range(obj.shape[1])]
                     for i in range(obj.shape[0])], axis=0)
 
@@ -26,16 +29,18 @@ mean_box = np.mean([[vars(obj[i, j])['box'] for j in range(obj.shape[1])]
 class ReducedSystem:
     """Reduced system only containing box size and averaged energies."""
 
-    def __init__(self, mean_box, mean_en, dil, tot):
+    def __init__(self, mean_box, mean_en, std_en, err_en, dil, tot):
         """Initialize."""
         self.ener = mean_en
+        self.std = std_en
+        self.err = err_en
         self.box = mean_box
         self.dil = dil
         self.tot = tot
         self.phi = dil/tot
 
 
-obj_a = ReducedSystem(mean_box, mean_en, dil, tot)
+obj_a = ReducedSystem(mean_box, mean_en, std_en, err_en, dil, tot)
 new_path = args.path[:-4] + '_a' + args.path[-4:]
 
 if os.path.exists(new_path):
