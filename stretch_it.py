@@ -75,7 +75,7 @@ for j in range(args.diluteno):
                               method='CG',
                               jac=energy.gradient,
                               options={'disp': True,
-                                       'gtol': 1e-5})
+                                       'gtol': 1e-7})
         for k in range(args.iteration+1))
     # feed optimized positions back to system objects
     for k in range(args.iteration+1):
