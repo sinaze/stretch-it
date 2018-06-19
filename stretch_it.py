@@ -8,6 +8,8 @@ import numpy as np
 import scipy.optimize as opt
 from joblib import Parallel, delayed
 import argparse
+import os
+import sys
 
 parser = argparse.ArgumentParser(description='Calculates energy curve of a\
                                  stretching process of a honeycomb lattice')
@@ -31,6 +33,14 @@ required.add_argument('-it', '--iteration', help='points on curve',
 required.add_argument('-f', '--fname', help='filename.pkl', type=str,
                       required=True)
 args = parser.parse_args()
+
+if os.path.exists(args.fname):
+    ans = input('File exists, continue? ')
+    if ans == 'y' or ans == 'yes':
+        print('Continuing...')
+else:
+    print('Abort program...')
+    sys.exit(0)
 
 
 def init(dim):
