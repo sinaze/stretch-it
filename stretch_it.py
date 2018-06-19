@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Simulate complete stretching cycle for one system / dilution."""
 import lattice
 import energy

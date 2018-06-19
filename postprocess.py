@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Post-process system arrays read in from pkl-files."""
 import numpy as np
 import pickle
