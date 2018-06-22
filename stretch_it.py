@@ -38,9 +38,9 @@ if os.path.exists(args.fname):
     ans = input('File exists, continue? ')
     if ans == 'y' or ans == 'yes':
         print('Continuing...')
-else:
-    print('Abort program...')
-    sys.exit(0)
+    else:
+        print('Abort program...')
+        sys.exit(0)
 
 
 def init(dim):
