@@ -77,7 +77,7 @@ for i in range(args.diluteno):
 # optimize positions for minimal total energy
 for j in range(args.diluteno):
     # minimize energy function
-    r = Parallel(n_jobs=-1, verbose=args.verbosity)(
+    r = Parallel(n_jobs=-1, verbose=args.verbosity, batch_size=1)(
         delayed(opt.minimize)(energy.energy,
                               systems[j][k].P.ravel(),
                               args=(systems[j][k].box,
