@@ -50,18 +50,19 @@ def init(dim):
     # get nonzero indices
     I, J = np.nonzero(A)
     II, JJ = np.nonzero(AA)
-    return A, AA, I, J, II, JJ
+    III, JJJ = np.nonzero(A - AA)
+    return A, AA, I, J, II, JJ, III, JJJ
 
 
 # dimensions
 dim = (args.nx, args.ny)
 # initialize
-A, AA, I, J, II, JJ = init(dim)
+A, AA, I, J, II, JJ, III, JJJ = init(dim)
 
 # create list of stretched system copies
 systems = []
 for _ in range(args.diluteno):
-    systems.append([system.LatticeSystem(dim, A, AA, II, JJ)])
+    systems.append([system.LatticeSystem(dim, A, AA, I, J, II, JJ, III, JJJ)])
 
 # dilute
 for i in range(args.diluteno):

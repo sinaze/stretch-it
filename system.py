@@ -10,11 +10,13 @@ import numpy as np
 class LatticeSystem:
     """Class for a simulation system."""
 
-    def __init__(self, dim, A, AA, II, JJ):
+    def __init__(self, dim, A, AA, I, J, II, JJ, III, JJJ):
         """Initialize as filled box."""
         self.P, self.box = lattice.fill_box(dim)
         self.dim = dim
+        self.I, self.J = np.copy(I), np.copy(J)
         self.II, self.JJ = np.copy(II), np.copy(JJ)
+        self.III, self.JJJ = np.copy(III), np.copy(JJJ)
         self.A, self.AA = np.copy(A), np.copy(AA)
         self.ll = 1.0
 
@@ -23,6 +25,13 @@ class LatticeSystem:
         self.create_mdist()
         inout.show_system(self.P, self.II, self.JJ, self.D, self.ll,
                           box=self.box)
+
+    def show2(self):
+        """Plot system configuration."""
+        self.create_mdist()
+        inout.show_system2(self.P, self.I, self.J, self.II, self.JJ, self.III,
+                           self.JJJ, self.D, self.ll, self.popped,
+                           box=self.box)
 
     def save(self, name):
         """Save system configuration."""
@@ -82,18 +91,21 @@ class LatticeSystem:
             self.AA = np.delete(self.AA, site, 1)
         self.I, self.J = np.nonzero(self.A)
         self.II, self.JJ = np.nonzero(self.AA)
+        self.III, self.JJJ = np.nonzero(self.A - self.AA)
 
 
 def stretch_sys(sys, alpha, ax=1):
     """Return system instance for a streched system."""
-    sys_s = LatticeSystem(sys.dim, sys.A, sys.AA, sys.II, sys.JJ)
+    sys_s = LatticeSystem(sys.dim, sys.A, sys.AA, sys.I, sys.J, sys.II, sys.JJ,
+                          sys.III, sys.JJJ)
     sys_s.P, sys_s.box = lattice.stretch_it(sys_s.P, sys_s.box, alpha, axis=ax)
     return sys_s
 
 
 def stretch_sys_site(sys, alpha, ax=1):
     """Return system instance for a streched system."""
-    sys_s = LatticeSystem(sys.dim, sys.A, sys.AA, sys.II, sys.JJ)
+    sys_s = LatticeSystem(sys.dim, sys.A, sys.AA, sys.I, sys.J, sys.II, sys.JJ,
+                          sys.III, sys.JJJ)
     sys_s.P = sys.P
     sys_s.A = sys.A
     sys_s.A = sys.A
@@ -101,5 +113,7 @@ def stretch_sys_site(sys, alpha, ax=1):
     sys_s.AA = sys.AA
     sys_s.I, sys.J = np.nonzero(sys_s.A)
     sys_s.II, sys.JJ = np.nonzero(sys_s.AA)
+    sys_s.III, sys_s.JJJ = np.nonzero(sys_s.A - sys_s.AA)
     sys_s.P, sys_s.box = lattice.stretch_it(sys_s.P, sys_s.box, alpha, axis=ax)
+    sys_s.popped = sys.popped
     return sys_s
