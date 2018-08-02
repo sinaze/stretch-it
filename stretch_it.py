@@ -81,6 +81,7 @@ try:
 
     # optimize positions for minimal total energy
     for j in range(args.diluteno):
+        print('Run ' + str(j+1) + ' of ' + str(args.diluteno))
         # minimize energy function
         r = Parallel(n_jobs=args.nt, verbose=args.verbosity, batch_size=1)(
             delayed(opt.minimize)(energy.energy,
