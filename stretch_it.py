@@ -21,6 +21,8 @@ parser.add_argument('-v', '--verbosity', help='control verbosity, default: 10',
                     type=int, default=10)
 parser.add_argument('--hor', help='stretch horizontally', default=1,
                     action='store_const', const=0)
+parser.add_argument('-nt', help='Number of threads, default: all available',
+                    type=int, default=-1)
 required = parser.add_argument_group('required arguments')
 required.add_argument('-d', '--dilute', type=int, help='Number of sites / bonds\
                       to remove, can be 0', required=True)
@@ -54,44 +56,52 @@ def init(dim):
     return A, AA, I, J, II, JJ, III, JJJ
 
 
-# dimensions
-dim = (args.nx, args.ny)
-# initialize
-A, AA, I, J, II, JJ, III, JJJ = init(dim)
+try:
+    # dimensions
+    dim = (args.nx, args.ny)
+    # initialize
+    A, AA, I, J, II, JJ, III, JJJ = init(dim)
 
-# create list of stretched system copies
-systems = []
-for _ in range(args.diluteno):
-    systems.append([system.LatticeSystem(dim, A, AA, I, J, II, JJ, III, JJJ)])
+    # create list of stretched system copies
+    systems = []
+    for _ in range(args.diluteno):
+        systems.append([system.LatticeSystem(dim, A, AA, I, J, II,
+                                             JJ, III, JJJ)])
 
-# dilute
-for i in range(args.diluteno):
-    systems[i][0].dilute_site(args.dilute)
+    # dilute
+    for i in range(args.diluteno):
+        systems[i][0].dilute_site(args.dilute)
 
-# stretch
-for i in range(args.diluteno):
-    for k in range(args.iteration):
-        systems[i].append(system.stretch_sys_site(systems[i][0],
-                                                  (k+1)/args.increment,
-                                                  ax=args.hor))
+    # stretch
+    for i in range(args.diluteno):
+        for k in range(args.iteration):
+            systems[i].append(system.stretch_sys_site(systems[i][0],
+                                                      (k+1)/args.increment,
+                                                      ax=args.hor))
 
-# optimize positions for minimal total energy
-for j in range(args.diluteno):
-    # minimize energy function
-    r = Parallel(n_jobs=-1, verbose=args.verbosity, batch_size=1)(
-        delayed(opt.minimize)(energy.energy,
-                              systems[j][k].P.ravel(),
-                              args=(systems[j][k].box,
-                                    systems[j][k].A,
-                                    systems[j][k].ll),
-                              method='CG',
-                              jac=energy.gradient,
-                              options={'disp': True,
-                                       'gtol': 1e-7})
-        for k in range(args.iteration+1))
-    # feed optimized positions back to system objects
-    for k in range(args.iteration+1):
-        systems[j][k].P = r[k].x.reshape((-1, 2))
-        systems[j][k].ener = r[k].fun
+    # optimize positions for minimal total energy
+    for j in range(args.diluteno):
+        # minimize energy function
+        r = Parallel(n_jobs=args.nt, verbose=args.verbosity, batch_size=1)(
+            delayed(opt.minimize)(energy.energy,
+                                  systems[j][k].P.ravel(),
+                                  args=(systems[j][k].box,
+                                        systems[j][k].A,
+                                        systems[j][k].ll),
+                                  method='CG',
+                                  jac=energy.gradient,
+                                  options={'disp': True,
+                                           'gtol': 1e-7})
+            for k in range(args.iteration+1))
+        # feed optimized positions back to system objects
+        for k in range(args.iteration+1):
+            systems[j][k].P = r[k].x.reshape((-1, 2))
+            systems[j][k].ener = r[k].fun
 
-inout.save_object(systems, args.fname)
+    inout.save_object(systems, args.fname)
+except KeyboardInterrupt:
+    print('Interrupted')
+    try:
+        sys.exit(0)
+    except SystemExit:
+        os._exit(0)
