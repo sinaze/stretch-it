@@ -8,6 +8,9 @@ import os
 parser = argparse.ArgumentParser(description='Average over realizations.')
 parser.add_argument('path', help='Path to the pkl-file to be averaged.',
                     type=str)
+# TODO: integrate fixing
+# parser.add_argument('--fix', default=0, action='store_const', const=1,
+#                     help='Fix missing values in old simulation files.')
 args = parser.parse_args()
 
 with open(args.path, 'rb') as inputs:
