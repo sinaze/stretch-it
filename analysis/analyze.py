@@ -4,7 +4,7 @@ import pickle
 import lattice
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-%matplotlib inline
+# %matplotlib inline
 
 
 class ReducedSystem:
