@@ -21,7 +21,7 @@ class ReducedSystem:
         self.phi = dil/tot
 
 
-path = '/net/storage/zendehroud/honey_big_highres/16x32_d20_100.pkl'
+path = '/net/storage/zendehroud/honey_big_highres/16x32_d35_100_fixed.pkl'
 with open(path, 'rb') as inputs:
     obj = pickle.load(inputs)
 
@@ -43,7 +43,19 @@ obj[0][5].popped = obj[0][0].popped
 
 obj[10][16].I, obj[10][16].J = np.nonzero(obj[10][16].A)
 obj[10][16].III, obj[10][16].JJJ = np.nonzero(obj[10][16].A - obj[10][16].AA)
-obj[10][16].show2()
+obj[8][32].show2()
+
+last = len(obj[8]) - 1
+obj[8][last].create_mdist()
+max_val = np.amax(obj[8][last].D[obj[8][last].I, obj[8][last].J] - 1.)
+max_val
+for i in range(0, last+1, 4):
+    obj[8][i].save2('d35_100_fix_' + str(i), max_val)
+
+[obj[j][i].ener for i in range(32) for j in range(100)]
+obj[10][0].save2('d20_10_0')
+for i in range(0, 17, 2):
+    obj[70][i].save2('d5_70_fix_' + str(i))
 np.sort(obj[4][0].popped)
 for i in range(len(obj[3][12].III)):
     print(obj[3][12].III[i], obj[3][12].JJJ[i])
