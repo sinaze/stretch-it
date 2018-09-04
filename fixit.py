@@ -24,6 +24,8 @@ for i in range(runs):
 # fix III, JJJ
 for i in range(runs):
     for j in range(incrs):
+        obj[i, j].I, obj[i, j].J = np.nonzero(obj[i, j].A)
+        obj[i, j].II, obj[i, j].JJ = np.nonzero(obj[i, j].AA)
         obj[i, j].III, obj[i, j].JJJ = np.nonzero(obj[i, j].A - obj[i, j].AA)
 
 # save it
@@ -34,8 +36,8 @@ if os.path.exists(new_path):
     if ans == 'y' or ans == 'yes':
         with open(new_path, 'wb') as output:  # Overwrites any existing file.
             pickle.dump(obj, output, -1)
-        print('Averaged pkl saved to ', new_path)
+        print('Fixed pkl saved to ', new_path)
 else:
     with open(new_path, 'wb') as output:  # Overwrites any existing file.
         pickle.dump(obj, output, -1)
-    print('Averaged pkl saved to ', new_path)
+    print('Fixed pkl saved to ', new_path)
