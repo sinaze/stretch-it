@@ -105,3 +105,6 @@ ENV/
 *#
 *~
 batch*.sh
+
+# snapshot folder
+png/
