@@ -39,6 +39,13 @@ class LatticeSystem:
         inout.save_system(name, self.P, self.II, self.JJ, self.D, self.ll,
                           box=self.box)
 
+    def save2(self, name, maxv):
+        """Save system configuration."""
+        self.create_mdist()
+        inout.save_system2(name, self.P, self.I, self.J, self.II, self.JJ,
+                           self.III, self.JJJ, self.D, self.ll, self.popped,
+                           box=self.box, max=maxv)
+
     def energy(self):
         """Compute energy of system."""
         self.ener = energy.energy(self.P, self.box, self.A, self.ll)
