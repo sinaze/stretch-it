@@ -23,6 +23,8 @@ parser.add_argument('--hor', help='stretch horizontally', default=1,
                     action='store_const', const=0)
 parser.add_argument('-nt', help='Number of threads, default: all available',
                     type=int, default=-1)
+parser.add_argument('-ki', help='Initial value for stretching iteration\
+                    (optional)', type=int, default=0)
 required = parser.add_argument_group('required arguments')
 required.add_argument('-d', '--dilute', type=int, help='Number of sites / bonds\
                       to remove, can be 0', required=True)
@@ -74,9 +76,9 @@ try:
 
     # stretch
     for i in range(args.diluteno):
-        for k in range(args.iteration):
+        for k in range(args.iteration-args.ki):
             systems[i].append(system.stretch_sys_site(systems[i][0],
-                                                      (k+1)/args.increment,
+                                                      (args.ki+k+1)/args.increment,
                                                       ax=args.hor))
 
     # optimize positions for minimal total energy
@@ -93,9 +95,9 @@ try:
                                   jac=energy.gradient,
                                   options={'disp': True,
                                            'gtol': 1e-7})
-            for k in range(args.iteration+1))
+            for k in range(args.iteration-args.ki+1))
         # feed optimized positions back to system objects
-        for k in range(args.iteration+1):
+        for k in range(args.iteration-args.ki+1):
             systems[j][k].P = r[k].x.reshape((-1, 2))
             systems[j][k].ener = r[k].fun
 
