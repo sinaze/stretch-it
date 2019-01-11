@@ -72,8 +72,8 @@ def links_matrix(dim):
     AA = np.copy(A)
     upper = mesh[0, :]
     lower = mesh[-1, :]
-    left = mesh[:, 0]
-    right = mesh[:, -1]
+    left = np.union1d(mesh[:, 0], mesh[:, 1])
+    right = np.union1d(mesh[:, -1], mesh[:, -2])
     upper = upper[upper != 0]
     lower = lower[lower != 0]
     left = left[left != 0]
@@ -82,8 +82,8 @@ def links_matrix(dim):
         for j in range(dim[0]):
             AA[lower[i]-1, upper[j]-1] = 0
             AA[upper[i]-1, lower[j]-1] = 0
-    for i in range(int(dim[0]/2)):
-        for j in range(int(dim[0]/2)):
+    for i in range(int(dim[0])):
+        for j in range(int(dim[0])):
             AA[left[i]-1, right[j]-1] = 0
             AA[right[i]-1, left[j]-1] = 0
     return A, AA
