@@ -3,6 +3,9 @@ import numpy as np
 import pickle
 import lattice
 import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -197,6 +200,44 @@ def save_system(name, P, II, JJ, D, l, size=7, box=None):
     plt.close()
 
 
+def reverse_colourmap(cmap, name='my_cmap_r'):
+    """Reverse colormaps.
+
+    In:
+    cmap, name
+    Out:
+    my_cmap_r
+
+    Explanation:
+    t[0] goes from 0 to 1
+    row i:   x  y0  y1 -> t[0] t[1] t[2]
+                   /
+                  /
+    row i+1: x  y0  y1 -> t[n] t[1] t[2]
+
+    so the inverse should do the same:
+    row i+1: x  y1  y0 -> 1-t[0] t[2] t[1]
+                   /
+                  /
+    row i:   x  y1  y0 -> 1-t[n] t[2] t[1]
+    """
+    reverse = []
+    k = []
+
+    for key in cmap._segmentdata:
+        k.append(key)
+        channel = cmap._segmentdata[key]
+        data = []
+
+        for t in channel:
+            data.append((1-t[0], t[2], t[1]))
+        reverse.append(sorted(data))
+
+    LinearL = dict(zip(k, reverse))
+    my_cmap_r = matplotlib.colors.LinearSegmentedColormap(name, LinearL)
+    return my_cmap_r
+
+
 def save_system2(name, P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
                  box=None, max=1.):
     """Plot the current system."""
@@ -214,8 +255,42 @@ def save_system2(name, P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
     #     norm = matplotlib.colors.Normalize(vmin=0., vmax=0.01)
     # else:
     norm = matplotlib.colors.Normalize(vmin=0., vmax=max)
-    c_m = matplotlib.cm.cool
-    s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)
+    # c_m = matplotlib.cm.viridis
+    cdict = {'red': ((0., 0.5, 0.5),
+                     (0.05, 0.6, 0.6),
+                     (0.11, 0.8, 0.8),
+                     (0.25, 0.9, 0.9),
+                     (0.38, 0.8, 0.8),
+                     (0.5, 0.7, 0.7),
+                     (0.55, 0.4, 0.4),
+                     (0.66, 0.2, 0.2),
+                     (0.89, 0, 0),
+                     (1, 0, 0)),
+             'green': ((0., 0, 0),
+                       (0.2, 0.1, 0.1),
+                       (0.3, 0.4, 0.4),
+                       (0.4, 0.6, 0.6),
+                       (0.5, 0.8, 0.8),
+                       (0.6, 0.6, 0.6),
+                       (0.64, 0.5, 0.5),
+                       (0.8, 0.4, 0.4),
+                       (0.91, 0.1, 0.1),
+                       (1, 0.1, 0.1)),
+             'blue': ((0., 0, 0),
+                      (0.2, 0.2, 0.2),
+                      (0.3, 0.4, 0.4),
+                      (0.34, 0.5, 0.5),
+                      (0.5, 1, 1),
+                      (0.6, 0.9, 0.9),
+                      (0.7, 0.7, 0.7),
+                      (0.8, 0.6, 0.6),
+                      (0.9, 0.5, 0.5),
+                      (1, 0.3, 0.3))}
+    c_m = LinearSegmentedColormap('my_colormap', cdict, 256)
+    c_m_r = reverse_colourmap(c_m)
+    # hotBig = cm.get_cmap('hot', 1024)
+    # c_m = ListedColormap(hotBig(np.linspace(0, 0.75, 768)))
+    s_m = matplotlib.cm.ScalarMappable(cmap=c_m_r, norm=norm)
     s_m.set_array([])
     # TODO remove hardcoding
     mesh = lattice.create_mesh((32, 32))
@@ -334,5 +409,5 @@ def save_system2(name, P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
     divider = make_axes_locatable(ax)
     cax1 = divider.append_axes("right", size="5%", pad=0.05)
     plt.colorbar(s_m, cax=cax1)
-    plt.savefig(str(name) + '.png', dpi=300)
+    plt.savefig(str(name) + '.pdf', dpi=300)
     plt.close()
