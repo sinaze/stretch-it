@@ -108,6 +108,11 @@ batch*.sh
 
 # snapshot folder
 png/
+analysis/
+pic/
+tests/
+*.pdf
+*.pkl
 
 # MacOS DS Store
-.DS_Store
+*.DS_Store*
