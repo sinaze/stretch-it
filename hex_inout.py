@@ -58,7 +58,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7, box=None):
     s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)
     s_m.set_array([])
     # TODO remove hardcoding
-    mesh = lattice.create_mesh((32, 32))
+    mesh = lattice.create_mesh((8, 8))
     for i in popped:
         mesh[mesh == i] = 0
         mesh[mesh > i] -= 1
@@ -92,10 +92,19 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7, box=None):
         plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-y_box, '-k', lw=2,
                  color=s_m.to_rgba(c))
     # connect
+    upper = mesh[0, :]
+    lower = mesh[-1, :]
+    left = np.union1d(mesh[:, 0], mesh[:, 1])
+    right = np.union1d(mesh[:, -1], mesh[:, -2])
+    upper = upper[upper != 0]
+    lower = lower[lower != 0]
+    left = left[left != 0]
+    right = right[right != 0]
     for i, j in zip(III[:], JJJ[:]):
         c = D[i, j] - l
-        if i in mesh[:, -1]-1 and j in mesh[:, 0]-1:
+        if i in right-1 and j in left-1:
             # right
+            print("(" + str(i) + "," + str(j) + ")")
             plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1], '-k', lw=2,
                      color=s_m.to_rgba(c))
             plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1]+y_box, '-k', lw=2,
@@ -109,36 +118,37 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7, box=None):
                      color=s_m.to_rgba(c))
             plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1]-y_box, '-k', lw=2,
                      color=s_m.to_rgba(c))
-    #     if j in mesh[:, -1]-1 and i in mesh[:, 0]-1:
-    #         # right
-    #         plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]+y_box, '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]-y_box, '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         # left
-    #         plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]+y_box, '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-y_box, '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #     if i in mesh[-1, :] and j in mesh[0, :]:
-    #         # up
-    #         plt.plot(P[[i, j], 0], P[[i, j], 1]+[y_box, 0], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         # down
-    #         plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
-    #         plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
-    #                  color=s_m.to_rgba(c))
+        if j in right-1 and i in left-1:
+            print("(" + str(i) + "," + str(j) + ")")
+            # right
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1], '-k', lw=2,
+                     color=s_m.to_rgba(c))
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]+y_box, '-k', lw=2,
+                     color=s_m.to_rgba(c))
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]-y_box, '-k', lw=2,
+                     color=s_m.to_rgba(c))
+            # left
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1], '-k', lw=2,
+                     color=s_m.to_rgba(c))
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]+y_box, '-k', lw=2,
+                     color=s_m.to_rgba(c))
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-y_box, '-k', lw=2,
+                     color=s_m.to_rgba(c))
+        # if i in right-1 and j in left-1:
+        #     # up
+        #     plt.plot(P[[i, j], 0], P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
+        #     plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
+        #     plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
+        #     # down
+        #     plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
+        #     plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
+        #     plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        #              color=s_m.to_rgba(c))
     # for i, j in zip(III[:1], JJJ[:1]):
     #     c = D[i, j] - l
     #     plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
