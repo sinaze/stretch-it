@@ -36,7 +36,7 @@ for _ in range(1):
 
 # dilute
 for i in range(1):
-    systems[i][0].dilute_site(3)
+    systems[i][0].dilute_site(0)
 
 # systems[0][0].show()
 
@@ -59,7 +59,7 @@ for j in range(1):
                                     systems[j][k].ll),
                               method='CG',
                               jac=energy.gradient,
-                              options={'disp': True,
+                              options={'disp': False,
                                        'gtol': 1e-7})
         for k in range(10+1))
     # feed optimized positions back to system objects
@@ -69,4 +69,5 @@ for j in range(1):
 
 systems[0][0].show2()
 # hex_inout.save_object(systems, args.fname)
-systems
+
+systems[0][0].III, systems[0][0].JJJ
