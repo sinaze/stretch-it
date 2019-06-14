@@ -110,6 +110,7 @@ batch*.sh
 png/
 analysis/
 pic/
+tests/
 *.pkl
 *.pdf
 *.png
