@@ -77,9 +77,8 @@ try:
     # stretch
     for i in range(args.diluteno):
         for k in range(args.iteration-args.ki):
-            systems[i].append(system.stretch_sys_site(systems[i][0],
-                                                      (args.ki+k+1)/args.increment,
-                                                      ax=args.hor))
+            systems[i].append(system.stretch_sys_site(
+                systems[i][0], (args.ki+k+1)/args.increment, ax=args.hor))
 
     # optimize positions for minimal total energy
     for j in range(args.diluteno):
