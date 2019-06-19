@@ -100,6 +100,30 @@ class LatticeSystem:
         self.II, self.JJ = np.nonzero(self.AA)
         self.III, self.JJJ = np.nonzero(self.A - self.AA)
 
+    def dilute_site_subset(self, s):
+        """Dilute by removing a node (site) from a subset of nodes (sites)."""
+        m = lattice.create_mesh(self.dim)
+        m_subset = m[0:-1:2]
+        numbers = np.sort(m_subset[np.nonzero(m_subset)])
+        # select random site for deletion (as above)
+        self.popped = []
+        random.shuffle(numbers)
+        for _ in range(s):
+            site = numbers.pop()
+            self.popped.append(site)
+            for i in range(len(numbers)):
+                if numbers[i] >= site:
+                    numbers[i] -= 1
+            # delete
+            self.P = np.delete(self.P, site, 0)
+            self.A = np.delete(self.A, site, 0)
+            self.A = np.delete(self.A, site, 1)
+            self.AA = np.delete(self.AA, site, 0)
+            self.AA = np.delete(self.AA, site, 1)
+        self.I, self.J = np.nonzero(self.A)
+        self.II, self.JJ = np.nonzero(self.AA)
+        self.III, self.JJJ = np.nonzero(self.A - self.AA)
+
 
 def stretch_sys(sys, alpha, ax=1):
     """Return system instance for a streched system."""
