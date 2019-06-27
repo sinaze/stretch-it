@@ -22,7 +22,7 @@ parser.add_argument('-v', '--verbosity', help='control verbosity, default: 10',
 parser.add_argument('--hor', help='stretch horizontally', default=1,
                     action='store_const', const=0)
 parser.add_argument('--subset', help='only dilute a subset of sites',
-                    default=1, action='store_const', const=0)
+                    default=0, action='store_const', const=1)
 parser.add_argument('-nt', help='Number of threads, default: all available',
                     type=int, default=-1)
 parser.add_argument('-ki', help='Initial value for stretching iteration\
