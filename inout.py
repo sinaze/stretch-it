@@ -479,109 +479,109 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
     # cell
     for i, j in zip(II, JJ):
         c = D[i, j] - l
-        plt.plot(P[[i, j], 0], P[[i, j], 1], '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1], '-', lw=2,
                  color=s_m.to_rgba(c))
         # right
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1], '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1], '-', lw=2,
                  color=s_m.to_rgba(c))
         # left
-        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1], '-k', lw=2,
+        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1], '-', lw=2,
                  color=s_m.to_rgba(c))
         # up
-        plt.plot(P[[i, j], 0], P[[i, j], 1]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
         # down
-        plt.plot(P[[i, j], 0], P[[i, j], 1]-y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]-y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
         # rightup
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
         # leftup
-        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
         # rightdown
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
         # leftdown
-        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
     # connect
     for i, j in zip(III[3:], JJJ[3:]):
         c = D[i, j] - l
         if i in mesh[:, -1]-1 and j in mesh[:, 0]-1:
             # right
-            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1], '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1]+y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1]+y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1]-y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1]-y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
             # left
-            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1], '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1]+y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1]+y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1]-y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[x_box, 0], P[[i, j], 1]-y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
         if j in mesh[:, -1]-1 and i in mesh[:, 0]-1:
             # right
-            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1], '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]+y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]+y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]-y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]+[x_box, 0], P[[i, j], 1]-y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
             # left
-            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1], '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]+y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]+y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-y_box, '-k', lw=2,
+            plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-y_box, '-', lw=2,
                      color=s_m.to_rgba(c))
         if i in mesh[-1, :] and j in mesh[0, :]:
             # up
-            plt.plot(P[[i, j], 0], P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+            plt.plot(P[[i, j], 0], P[[i, j], 1]+[y_box, 0], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+            plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]+[y_box, 0], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+[y_box, 0], '-k', lw=2,
+            plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]+[y_box, 0], '-', lw=2,
                      color=s_m.to_rgba(c))
             # down
-            plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
+            plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+            plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,
                      color=s_m.to_rgba(c))
-            plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+            plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,
                      color=s_m.to_rgba(c))
     for i, j in zip(III[:1], JJJ[:1]):
         c = D[i, j] - l
-        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
     for i, j in zip(III[1:2], JJJ[1:2]):
         c = D[i, j] - l
-        plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box]+y_box, '-k',
+        plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box]+y_box, '-',
                  lw=2, color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]-[0, x_box]+x_box, P[[i, j], 1]-[0, y_box], '-k',
+        plt.plot(P[[i, j], 0]-[0, x_box]+x_box, P[[i, j], 1]-[0, y_box], '-',
                  lw=2, color=s_m.to_rgba(c))
         plt.plot(P[[i, j], 0]-[0, x_box]+x_box, P[[i, j], 1]-[0, y_box]+y_box,
-                 '-k', lw=2, color=s_m.to_rgba(c))
+                 '-', lw=2, color=s_m.to_rgba(c))
     for i, j in zip(III[2:3], JJJ[2:3]):
         c = D[i, j] - l
-        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
-        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box]+y_box, '-k', lw=2,
+        plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
     plt.xlim((-2, x_box + 2))
     plt.ylim((-2, y_box + 2))
