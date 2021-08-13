@@ -40,7 +40,7 @@ def create_mesh(dim):
     """Create honeycomb mesh with numbered nodes."""
     n = int(dim[0]/2)
     m = dim[1]
-    M = np.array([[[x, 0] if j % 2 is 0 else [0, x]
+    M = np.array([[[x, 0] if j % 2 == 0 else [0, x]
                  for x in range(j*2*n+1, j*2*n+1+2*n)]
                  for j in range(0, round(m/2))])
     M = M.ravel().reshape((m, 2*n))
