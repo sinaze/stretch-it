@@ -18,7 +18,7 @@ class LatticeSystem:
         self.II, self.JJ = np.copy(II), np.copy(JJ)
         self.III, self.JJJ = np.copy(III), np.copy(JJJ)
         self.A, self.AA = np.copy(A), np.copy(AA)
-        self.ll = 1.0
+        self.ll = lattice.create_ll(dim)
 
     def show(self):
         """Plot system configuration."""

@@ -478,7 +478,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
         mesh[mesh > i] -= 1
     # cell
     for i, j in zip(II, JJ):
-        c = D[i, j] - l
+        c = D[i, j] - l[i, j]
         plt.plot(P[[i, j], 0], P[[i, j], 1], '-', lw=2,
                  color=s_m.to_rgba(c))
         # right
@@ -507,7 +507,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
                  color=s_m.to_rgba(c))
     # connect
     for i, j in zip(III[3:], JJJ[3:]):
-        c = D[i, j] - l
+        c = D[i, j] - l[i, j]
         if i in mesh[:, -1]-1 and j in mesh[:, 0]-1:
             # right
             plt.plot(P[[i, j], 0]+[0, x_box], P[[i, j], 1], '-', lw=2,
@@ -554,7 +554,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
             plt.plot(P[[i, j], 0]-x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,
                      color=s_m.to_rgba(c))
     for i, j in zip(III[:1], JJJ[:1]):
-        c = D[i, j] - l
+        c = D[i, j] - l[i, j]
         plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
         plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
@@ -564,7 +564,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
         plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box]+y_box, '-', lw=2,
                  color=s_m.to_rgba(c))
     for i, j in zip(III[1:2], JJJ[1:2]):
-        c = D[i, j] - l
+        c = D[i, j] - l[i, j]
         plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
         plt.plot(P[[i, j], 0]-[0, x_box], P[[i, j], 1]-[0, y_box]+y_box, '-',
@@ -574,7 +574,7 @@ def show_system2(P, I, J, II, JJ, III, JJJ, D, l, popped, size=7,
         plt.plot(P[[i, j], 0]-[0, x_box]+x_box, P[[i, j], 1]-[0, y_box]+y_box,
                  '-', lw=2, color=s_m.to_rgba(c))
     for i, j in zip(III[2:3], JJJ[2:3]):
-        c = D[i, j] - l
+        c = D[i, j] - l[i, j]
         plt.plot(P[[i, j], 0], P[[i, j], 1]-[0, y_box], '-', lw=2,
                  color=s_m.to_rgba(c))
         plt.plot(P[[i, j], 0]+x_box, P[[i, j], 1]-[0, y_box], '-', lw=2,

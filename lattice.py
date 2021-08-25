@@ -4,7 +4,7 @@ import periodicarray as pbc
 import tools
 
 
-def create_lattice(dim, e=1.):
+def create_lattice(dim, e=1., e_alpha=1.8):
     """Create node position array for a honeycomb lattice.
 
     Parameters:
@@ -21,14 +21,14 @@ def create_lattice(dim, e=1.):
     assert dim[0] % 2 == 0
     x = np.linspace(0, (dim[0]/2 - 1)*c, num=int(dim[0]/2))
     assert dim[1] % 4 == 0
-    y = np.linspace(0, 3*e*(dim[1]/4 - 1), num=int(dim[1]/4))
+    y = np.linspace(0, (2*e_alpha+e) *(dim[1]/4 - 1), num=int(dim[1]/4))
     grid_x, grid_y = np.meshgrid(x, y, indexing='xy')
     P0 = np.column_stack((grid_x.ravel(), grid_y.ravel()))
     # add shifted rectangular lattice to create a hexagonal
     P1 = np.concatenate((P0,
-                        np.column_stack((P0[:, 0]+c/2., P0[:, 1]+3.*e/2.))))
+                        np.column_stack((P0[:, 0]+c/2., P0[:, 1] + (2*e_alpha+e)/2.))))
     # add two shifted hexagonals to create honeycomb
-    P2 = np.concatenate((P1, np.column_stack((P1[:, 0], P1[:, 1] + e))))
+    P2 = np.concatenate((P1, np.column_stack((P1[:, 0], P1[:, 1] + e_alpha))))
     # sort positions starting with lower row from left to right
     P3 = P2[np.lexsort(P2.T)]
     return P3
@@ -45,6 +45,18 @@ def create_mesh(dim):
                  for j in range(0, round(m/2))])
     M = M.ravel().reshape((m, 2*n))
     return np.flipud(M)
+
+
+def create_ll(dim, e_alpha=1.8):
+    assert dim[0] % 2 == 0
+    n = int(dim[0]/2) * dim[1]
+    mesh = create_mesh(dim)
+    ll = np.ones((n, n))
+    for node in range(n):
+        idx = tools.get_idx(mesh, node+1)
+        if mesh[idx[0]-1, idx[1]] != 0:
+            ll[node, mesh[idx[0]-1, idx[1]]-1] = e_alpha
+    return ll
 
 
 def links_matrix(dim):

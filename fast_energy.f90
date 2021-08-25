@@ -74,7 +74,7 @@ subroutine gradient(AMat, DMat, Pos, box, l, grad, Dim, NAtom)
     real(dp), intent(in), dimension(0:NAtom-1, 0:NAtom-1)   :: DMat
     real(dp), intent(in), dimension(0:NAtom-1, 0:Dim-1)     :: Pos
     real(dp), intent(in), dimension(0:Dim-1)                :: box
-    real(dp), intent(in)                                    :: l
+    real(dp), intent(in), dimension(0:NAtom-1, 0:NAtom-1)   :: l
     real(dp), intent(inout), dimension(0:NAtom-1, 0:Dim-1)  :: grad
 !f2py intent(in, out) :: grad
 
@@ -84,7 +84,7 @@ subroutine gradient(AMat, DMat, Pos, box, l, grad, Dim, NAtom)
     do i = 0, NAtom-1
         do j =0, NAtom-1
             call mindist(i, j, Pos, box, d, Dim, NAtom)
-            fac(:) = d(:) * (1.0_dp - l/DMat(i, j))
+            fac(:) = d(:) * (1.0_dp - l(i, j) / DMat(i, j))
             grad(i, :) = grad(i, :) + AMat(i, j) * fac(:) + AMat(j, i) * fac(:)
         end do
     end do
