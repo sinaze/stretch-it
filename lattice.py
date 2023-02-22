@@ -48,6 +48,7 @@ def create_mesh(dim):
 
 
 def create_ll(dim, e_alpha=1.8):
+    """Create array containing equilibrium lengths between connected nodes."""
     assert dim[0] % 2 == 0
     n = int(dim[0]/2) * dim[1]
     mesh = create_mesh(dim)

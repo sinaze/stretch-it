@@ -10,7 +10,7 @@ import numpy as np
 class LatticeSystem:
     """Class for a simulation system."""
 
-    def __init__(self, dim, A, AA, I, J, II, JJ, III, JJJ):
+    def __init__(self, dim, A, AA, I, J, II, JJ, III, JJJ, ll):
         """Initialize as filled box."""
         self.P, self.box = lattice.fill_box(dim)
         self.dim = dim
@@ -18,7 +18,7 @@ class LatticeSystem:
         self.II, self.JJ = np.copy(II), np.copy(JJ)
         self.III, self.JJJ = np.copy(III), np.copy(JJJ)
         self.A, self.AA = np.copy(A), np.copy(AA)
-        self.ll = lattice.create_ll(dim)
+        self.ll = np.copy(ll)
 
     def show(self):
         """Plot system configuration."""
@@ -120,6 +120,8 @@ class LatticeSystem:
             self.A = np.delete(self.A, site-1, 1)
             self.AA = np.delete(self.AA, site-1, 0)
             self.AA = np.delete(self.AA, site-1, 1)
+            self.ll = np.delete(self.ll, site-1, 0)
+            self.ll = np.delete(self.ll, site-1, 1)
         self.I, self.J = np.nonzero(self.A)
         self.II, self.JJ = np.nonzero(self.AA)
         self.III, self.JJJ = np.nonzero(self.A - self.AA)
@@ -136,11 +138,10 @@ def stretch_sys(sys, alpha, ax=1):
 def stretch_sys_site(sys, alpha, ax=1):
     """Return system instance for a streched system."""
     sys_s = LatticeSystem(sys.dim, sys.A, sys.AA, sys.I, sys.J, sys.II, sys.JJ,
-                          sys.III, sys.JJJ)
+                          sys.III, sys.JJJ, sys.ll)
     sys_s.P = sys.P
     sys_s.A = sys.A
-    sys_s.A = sys.A
-    sys_s.AA = sys.AA
+    sys_s.ll = sys.ll
     sys_s.AA = sys.AA
     sys_s.I, sys.J = np.nonzero(sys_s.A)
     sys_s.II, sys.JJ = np.nonzero(sys_s.AA)
