@@ -1,0 +1,15 @@
+# Number of lattice point on the firt line of x-axis
+nx = 4
+# Number of lattice point on the y-axis
+ny = 8
+
+# Number of sites to remove
+dilute = 1
+
+# Number of diluted system copies to optimize
+nsamples = 1
+
+# Stretch in each step by 1/increment
+increment = 30
+# Do nstretch streching steps (= number of points on energy curve)
+nstretch = 20
