@@ -56,6 +56,7 @@ def create_ll(dim, e_alpha=1.8):
         idx = tools.get_idx(mesh, node+1)
         if mesh[idx[0]-1, idx[1]] != 0:
             ll[node, mesh[idx[0]-1, idx[1]]-1] = e_alpha
+            ll[mesh[idx[0]-1, idx[1]]-1, node] = e_alpha
     return ll
 
 
