@@ -60,56 +60,57 @@ def init(dim):
     return A, AA, I, J, II, JJ, III, JJJ
 
 
-try:
-    # dimensions
-    dim = (args.nx, args.ny)
-    # initialize
-    A, AA, I, J, II, JJ, III, JJJ = init(dim)
-
-    # create list of stretched system copies
-    systems = []
-    for _ in range(args.diluteno):
-        systems.append([system.LatticeSystem(dim, A, AA, I, J, II,
-                                             JJ, III, JJJ)])
-
-    # dilute
-    if args.subset == 0:
-        for i in range(args.diluteno):
-            systems[i][0].dilute_site(args.dilute)
-    elif args.subset == 1:
-        for i in range(args.diluteno):
-            systems[i][0].dilute_site_subset(args.dilute)
-
-    # stretch
-    for i in range(args.diluteno):
-        for k in range(args.iteration-args.ki):
-            systems[i].append(system.stretch_sys_site(
-                systems[i][0], (args.ki+k+1)/args.increment, ax=args.hor))
-
-    # optimize positions for minimal total energy
-    for j in range(args.diluteno):
-        print('Run ' + str(j+1) + ' of ' + str(args.diluteno))
-        # minimize energy function
-        r = Parallel(n_jobs=args.nt, verbose=args.verbosity, batch_size=1)(
-            delayed(opt.minimize)(energy.energy,
-                                  systems[j][k].P.ravel(),
-                                  args=(systems[j][k].box,
-                                        systems[j][k].A,
-                                        systems[j][k].ll),
-                                  method='CG',
-                                  jac=energy.gradient,
-                                  options={'disp': True,
-                                           'gtol': 1e-7})
-            for k in range(args.iteration-args.ki+1))
-        # feed optimized positions back to system objects
-        for k in range(args.iteration-args.ki+1):
-            systems[j][k].P = r[k].x.reshape((-1, 2))
-            systems[j][k].ener = r[k].fun
-
-    inout.save_object(systems, args.fname)
-except KeyboardInterrupt:
-    print('Interrupted')
+if __name__ == '__main__':
     try:
-        sys.exit(0)
-    except SystemExit:
-        os._exit(0)
+        # dimensions
+        dim = (args.nx, args.ny)
+        # initialize
+        A, AA, I, J, II, JJ, III, JJJ = init(dim)
+
+        # create list of stretched system copies
+        systems = []
+        for _ in range(args.diluteno):
+            systems.append([system.LatticeSystem(dim, A, AA, I, J, II,
+                                                JJ, III, JJJ)])
+
+        # dilute
+        if args.subset == 0:
+            for i in range(args.diluteno):
+                systems[i][0].dilute_site(args.dilute)
+        elif args.subset == 1:
+            for i in range(args.diluteno):
+                systems[i][0].dilute_site_subset(args.dilute)
+
+        # stretch
+        for i in range(args.diluteno):
+            for k in range(args.iteration-args.ki):
+                systems[i].append(system.stretch_sys_site(
+                    systems[i][0], (args.ki+k+1)/args.increment, ax=args.hor))
+
+        # optimize positions for minimal total energy
+        for j in range(args.diluteno):
+            print('Run ' + str(j+1) + ' of ' + str(args.diluteno))
+            # minimize energy function
+            r = Parallel(n_jobs=args.nt, verbose=args.verbosity, batch_size=1)(
+                delayed(opt.minimize)(energy.energy,
+                                    systems[j][k].P.ravel(),
+                                    args=(systems[j][k].box,
+                                            systems[j][k].A,
+                                            systems[j][k].ll),
+                                    method='CG',
+                                    jac=energy.gradient,
+                                    options={'disp': True,
+                                            'gtol': 1e-7})
+                for k in range(args.iteration-args.ki+1))
+            # feed optimized positions back to system objects
+            for k in range(args.iteration-args.ki+1):
+                systems[j][k].P = r[k].x.reshape((-1, 2))
+                systems[j][k].ener = r[k].fun
+
+        inout.save_object(systems, args.fname)
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
