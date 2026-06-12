@@ -1,8 +1,5 @@
-"""Small useful functions."""
-import numpy as np
+"""Compatibility shim for `stretchit.tools`.
 
-
-def get_idx(array, value):
-    """Return indices of an array for given value."""
-    idx = np.where(array == value)
-    return idx[0][0], idx[1][0]
+Preserves top-level `import tools` by re-exporting package contents.
+"""
+from stretchit.tools import *  # noqa: F401,F403

@@ -1,8 +1,7 @@
-"""Compatibility shim for `stretchit.lattice`.
-
-Preserves top-level `import lattice` by re-exporting package contents.
-"""
-from stretchit.lattice import *  # noqa: F401,F403
+"""Create honeycomb lattice."""
+import numpy as np
+from . import periodicarray as pbc
+from . import tools
 
 
 def create_lattice(dim, e=1.):

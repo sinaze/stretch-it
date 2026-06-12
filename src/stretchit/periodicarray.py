@@ -47,8 +47,35 @@ class Periodic_Lattice(np.ndarray):
         been taken (obj).
         See
         http://docs.scipy.org/doc/numpy/user/basics.subclassing.html#simple-example-adding-an-extra-attribute-to-ndarray
-        """Compatibility shim for `stretchit.periodicarray`.
-
-        Preserves top-level `import periodicarray` by re-exporting package contents.
+        for more info
         """
-        from stretchit.periodicarray import *  # noqa: F401,F403
+        if obj is None:
+            return
+        self.lattice_shape = getattr(obj, 'lattice_shape', obj.shape)
+        self.lattice_dim = getattr(obj, 'lattice_dim', len(obj.shape))
+        self.lattice_spacing = getattr(obj, 'lattice_spacing', None)
+        pass
+
+    def latticeWrapIdx(self, index):
+        """Return periodic lattice index for a given iterable index.
+
+        Required Inputs:
+            index :: iterable :: one integer for each axis
+
+        This is NOT compatible with slicing
+        """
+        # handle integer slices
+        if not hasattr(index, '__iter__'):
+            return index
+        # must reference a scalar
+        if len(index) != len(self.lattice_shape):
+            return index
+        # slices not supported
+        if any(type(i) == slice for i in index):
+            return index
+        # periodic indexing of scalars
+        if len(index) == len(self.lattice_shape):
+            mod_index = tuple(((i % s + s) % s
+                              for i, s in zip(index, self.lattice_shape)))
+            return mod_index
+        raise ValueError('Unexpected index: {}'.format(index))

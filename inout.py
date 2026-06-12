@@ -1,15 +1,8 @@
-"""Input/Output function definitions."""
-import numpy as np
-import pickle
-import lattice
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+"""Compatibility shim for `stretchit.inout`.
+
+Preserves top-level `import inout` by re-exporting package contents.
+"""
+from stretchit.inout import *  # noqa: F401,F403
 
 
 def save_object(obj, filename):
