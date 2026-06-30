@@ -1,0 +1,99 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: stretch_it.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/stretch_it.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "${input:nx}",
+        "${input:ny}",
+        "-d",
+        "${input:dilute}",
+        "-dn",
+        "${input:diluteno}",
+        "-k",
+        "${input:increment}",
+        "-it",
+        "${input:iteration}",
+        "-f",
+        "${input:outputFile}",
+        "-nt",
+        "1"
+      ]
+    },
+    {
+      "name": "Python: stretch_it.py (small test)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/stretch_it.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "args": [
+        "10",
+        "12",
+        "-d",
+        "0",
+        "-dn",
+        "1",
+        "-k",
+        "10",
+        "-it",
+        "5",
+        "-f",
+        "${workspaceFolder}/tmp/test_out.pkl",
+        "-nt",
+        "1"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "nx",
+      "type": "promptString",
+      "description": "nx (even number of columns)",
+      "default": "10"
+    },
+    {
+      "id": "ny",
+      "type": "promptString",
+      "description": "ny (multiple of 4 rows)",
+      "default": "12"
+    },
+    {
+      "id": "dilute",
+      "type": "promptString",
+      "description": "dilute",
+      "default": "0"
+    },
+    {
+      "id": "diluteno",
+      "type": "promptString",
+      "description": "diluteno",
+      "default": "1"
+    },
+    {
+      "id": "increment",
+      "type": "promptString",
+      "description": "increment",
+      "default": "10"
+    },
+    {
+      "id": "iteration",
+      "type": "promptString",
+      "description": "iteration",
+      "default": "5"
+    },
+    {
+      "id": "outputFile",
+      "type": "promptString",
+      "description": "output file",
+      "default": "${workspaceFolder}/tmp/test_out.pkl"
+    }
+  ]
+}

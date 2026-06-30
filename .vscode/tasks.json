@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "stretch_it: small test",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "${workspaceFolder}/stretch_it.py",
+        "10",
+        "12",
+        "-d",
+        "0",
+        "-dn",
+        "1",
+        "-k",
+        "10",
+        "-it",
+        "5",
+        "-f",
+        "${workspaceFolder}/tmp/test_out.pkl",
+        "-nt",
+        "1"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}
